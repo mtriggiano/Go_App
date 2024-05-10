@@ -19,4 +19,8 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: '192.168.0.198', port: 3000 }
   
   # Otros ajustes...
+
+  # Niveles de log: :debug, :info, :warn, :error, :fatal, :unknown
+  config.log_level = :debug
+
 end

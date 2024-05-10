@@ -1,5 +1,5 @@
 ActiveAdmin.register OrdenTrabajo do
-  permit_params :numero_remito, :fecha_inicio, :destino,:contacto, :celular, :estado, :cliente_id
+  permit_params :numero_remito, :fecha_inicio, :destino, :contacto, :celular, :estado, :cliente_id
 
   filter :numero_remito
   filter :fecha_inicio
@@ -23,7 +23,9 @@ ActiveAdmin.register OrdenTrabajo do
     column :destino
     column :contacto
     column :celular
-    column :estado
+    column :estado do |orden|
+      orden.estado ? orden.estado.humanize : 'Estado no definido'
+    end
     actions
   end
 
@@ -38,6 +40,32 @@ ActiveAdmin.register OrdenTrabajo do
       f.input :estado, as: :select, collection: OrdenTrabajo.estados.keys.map { |key| [key.humanize, key] }, include_blank: 'Seleccione Estado'
     end
     f.actions
+  end
+
+  show do
+    attributes_table do
+      row :numero_remito
+      row :fecha_inicio
+      row :nombre do |orden|
+        orden.cliente ? orden.cliente.nombre : 'Nombre no asignado'
+      end
+      row :apellido do |orden|
+        orden.cliente ? orden.cliente.apellido : 'Apellido no asignado'
+      end
+      row :dni_cuit do |orden|
+        orden.cliente ? link_to(orden.cliente.dni_cuit, admin_cliente_path(orden.cliente)) : 'Cliente no asignado'
+      end
+      row :destino
+      row :contacto
+      row :celular
+      row :estado do |orden|
+        Rails.logger.info "Current estado value: #{orden.estado}"  # Agrega este log para debugging
+        orden.estado ? orden.estado.humanize : 'Estado no definido'
+      end
+      row :created_at
+      row :updated_at
+    end
+    active_admin_comments
   end
 
   controller do
