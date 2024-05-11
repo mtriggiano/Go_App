@@ -1,5 +1,5 @@
 ActiveAdmin.register OrdenTrabajo do
-  permit_params :numero_remito, :fecha_inicio, :destino, :contacto, :celular, :estado, :cliente_id
+  permit_params :numero_remito, :fecha_inicio, :destino, :contacto, :celular, :estado, :cliente_id, :numero_presupuesto, :detalle_tareas, :tipo_ordens
 
   filter :numero_remito
   filter :fecha_inicio
@@ -10,7 +10,11 @@ ActiveAdmin.register OrdenTrabajo do
     selectable_column
     id_column
     column :numero_remito
+    column :numero_presupuesto
     column :fecha_inicio
+    column :tipo_orden do |orden|
+      orden.tipo_ordens ? orden.tipo_ordens.humanize : 'Tipo no definido'
+    end
     column "Nombre", sortable: 'clientes.nombre' do |orden|
       orden.cliente ? orden.cliente.nombre : 'Nombre no asignado'
     end
@@ -23,6 +27,7 @@ ActiveAdmin.register OrdenTrabajo do
     column :destino
     column :contacto
     column :celular
+    column :detalle_tareas
     column :estado do |orden|
       orden.estado ? orden.estado.humanize : 'Estado no definido'
     end
@@ -31,12 +36,15 @@ ActiveAdmin.register OrdenTrabajo do
 
   form do |f|
     f.inputs 'Detalles de la Orden de Trabajo' do
+      f.input :tipo_ordens, as: :select, collection: OrdenTrabajo.tipo_ordens.keys.map { |key| [key.humanize, key] }, include_blank: 'Seleccione Tipo de Orden'
       f.input :numero_remito
-      f.input :fecha_inicio, as: :datepicker
+      f.input :numero_presupuesto
+      f.input :fecha_inicio, as: :datetime_picker
       f.input :cliente, as: :select, collection: Cliente.all.map { |c| ["#{c.nombre} #{c.apellido} - #{c.dni_cuit}", c.id] }, include_blank: 'Seleccione un Cliente', input_html: { class: 'select2' }
       f.input :destino
       f.input :contacto
       f.input :celular
+      f.input :detalle_tareas
       f.input :estado, as: :select, collection: OrdenTrabajo.estados.keys.map { |key| [key.humanize, key] }, include_blank: 'Seleccione Estado'
     end
     f.actions
@@ -44,7 +52,9 @@ ActiveAdmin.register OrdenTrabajo do
 
   show do
     attributes_table do
+      row :tipo_ordens
       row :numero_remito
+      row :numero_presupuesto
       row :fecha_inicio
       row :nombre do |orden|
         orden.cliente ? orden.cliente.nombre : 'Nombre no asignado'
@@ -58,8 +68,8 @@ ActiveAdmin.register OrdenTrabajo do
       row :destino
       row :contacto
       row :celular
+      row :detalle_tareas
       row :estado do |orden|
-        Rails.logger.info "Current estado value: #{orden.estado}"  # Agrega este log para debugging
         orden.estado ? orden.estado.humanize : 'Estado no definido'
       end
       row :created_at

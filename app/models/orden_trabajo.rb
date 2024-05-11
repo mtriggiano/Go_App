@@ -1,7 +1,10 @@
 class OrdenTrabajo < ApplicationRecord
   belongs_to :cliente, optional: true
 
-  # Define un enum para el campo estado
+  # Especifica el tipo de dato de los enums si ActiveRecord no lo detecta automáticamente
+  attribute :tipo_ordens, :integer
+  attribute :estado, :integer
+
   enum estado: {
     pendiente: 0,
     finalizado: 1,
@@ -9,7 +12,13 @@ class OrdenTrabajo < ApplicationRecord
     reprogramar: 3,
     cancelada: 4,
     anulada: 5
-    # Agrega más estados según sea necesario
+  }
+  
+  enum tipo_ordens: {
+    servicio_internet: 0,
+    instalaciones: 1,
+    mantenimiento: 2,
+    garantia: 3
   }
 
   # Métodos ransackable
