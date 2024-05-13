@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Invitación para crear su cuenta</title>
+</head>
+<body>
+  <h1>Hola, <%= @cliente.nombre %></h1>
+  <p>Te invitamos a crear tu cuenta en nuestra plataforma para que puedas gestionar tus órdenes de trabajo.</p>
+  <p>Puedes registrarte siguiendo este enlace: <%= link_to 'Crear Cuenta', new_user_registration_url %></p>
+</body>
+</html>

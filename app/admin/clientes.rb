@@ -38,12 +38,24 @@ ActiveAdmin.register Cliente do
     end
   end
 
-  # Añade el controlador personalizado con la acción de búsqueda
   controller do
-    # Acción de búsqueda para ser usada con AJAX
     def search
       clients = Cliente.ransack(nombre_or_apellido_or_dni_cuit_cont: params[:q]).result(distinct: true)
       render json: clients.map { |client| { id: client.id, text: "#{client.nombre} #{client.apellido} - #{client.dni_cuit}" } }
     end
+  end
+
+  member_action :send_invitation, method: :post do
+    cliente = Cliente.find_by(id: params[:id])
+    if cliente
+      ClientMailer.invitation_email(cliente).deliver_now
+      redirect_to admin_cliente_path(cliente), notice: "Invitación enviada correctamente a #{cliente.email}"
+    else
+      redirect_to admin_clientes_path, alert: "Cliente no encontrado."
+    end
+  end
+
+  action_item :send_invitation, only: :edit do
+    link_to 'Enviar Invitación', send_invitation_admin_cliente_path(resource), method: :post
   end
 end
