@@ -13,3 +13,14 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 end
+
+# config/routes.rb
+Rails.application.routes.draw do
+  post 'images/upload', to: 'images#upload'
+end
+
+# config/routes.rb
+Rails.application.routes.draw do
+  post 'uploads/create', to: 'uploads#create'
+end
+

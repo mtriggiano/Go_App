@@ -1,4 +1,6 @@
 ActiveAdmin.register OrdenTrabajo do
+  menu priority: 4
+  
   permit_params :numero_remito, :fecha_inicio, :destino, :contacto, :celular, :estado, :cliente_id, :numero_presupuesto, :detalle_tareas, :tipo_ordens
 
   filter :numero_remito
@@ -12,7 +14,7 @@ ActiveAdmin.register OrdenTrabajo do
     column :numero_remito
     column :numero_presupuesto
     column :fecha_inicio
-    column :tipo_orden do |orden|
+    column :tipo_ordens do |orden|
       orden.tipo_ordens ? orden.tipo_ordens.humanize : 'Tipo no definido'
     end
     column "Nombre", sortable: 'clientes.nombre' do |orden|
@@ -27,7 +29,6 @@ ActiveAdmin.register OrdenTrabajo do
     column :destino
     column :contacto
     column :celular
-    column :detalle_tareas
     column :estado do |orden|
       orden.estado ? orden.estado.humanize : 'Estado no definido'
     end
@@ -44,7 +45,7 @@ ActiveAdmin.register OrdenTrabajo do
       f.input :destino
       f.input :contacto
       f.input :celular
-      f.input :detalle_tareas
+      f.input :detalle_tareas, as: :text, input_html: { class: 'tinymce' }
       f.input :estado, as: :select, collection: OrdenTrabajo.estados.keys.map { |key| [key.humanize, key] }, include_blank: 'Seleccione Estado'
     end
     f.actions
@@ -68,7 +69,9 @@ ActiveAdmin.register OrdenTrabajo do
       row :destino
       row :contacto
       row :celular
-      row :detalle_tareas
+      row :detalle_tareas do |orden|
+        sanitize orden.detalle_tareas, tags: %w[p strong img], attributes: %w[src style]
+      end
       row :estado do |orden|
         orden.estado ? orden.estado.humanize : 'Estado no definido'
       end

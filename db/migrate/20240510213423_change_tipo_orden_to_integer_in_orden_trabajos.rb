@@ -3,11 +3,11 @@
 class ChangeTipoOrdenToIntegerInOrdenTrabajos < ActiveRecord::Migration[7.1]
   def up
     # Cambia el tipo de columna 'tipo_orden' a integer utilizando 'USING'
-    change_column :orden_trabajos, :tipo_orden, 'integer USING CAST(tipo_orden AS integer)'
+    change_column :orden_trabajos, :tipo_ordens, 'integer USING CAST(tipo_orden AS integer)'
   end
 
   def down
     # Cambia de nuevo a character varying en caso de que necesites revertir la migración
-    change_column :orden_trabajos, :tipo_orden, :string
+    change_column :orden_trabajos, :tipo_ordens, :string
   end
 end

@@ -8,6 +8,8 @@ gem 'sassc-rails'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'actionmailer', require: 'action_mailer'
 gem 'activeadmin_addons'
+gem 'tinymce-rails'
+
 
 
 

@@ -1,5 +1,7 @@
 // app/assets/javascripts/active_admin.js
 //= require active_admin/base
+//= require tinymce
+
 
 $(document).ready(function() {
     if ($('.select2-ajax').length > 0) {
@@ -27,4 +29,18 @@ $(document).ready(function() {
       });
     }
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    tinymce.init({
+      selector: 'textarea.tinymce',
+      plugins: 'image',
+      toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | image',
+      menubar: false,
+      automatic_uploads: true,
+      images_upload_url: '/uploads/create', // Actualizado para usar el nuevo endpoint
+      file_picker_types: 'image',
+      images_reuse_filename: true
+    });
+  });
+  
   

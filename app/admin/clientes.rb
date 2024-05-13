@@ -1,4 +1,6 @@
 ActiveAdmin.register Cliente do
+  menu priority: 3
+
   permit_params :nombre, :apellido, :dni_cuit, :direccion, :email, :celular
 
   index do
