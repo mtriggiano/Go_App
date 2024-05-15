@@ -9,6 +9,9 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'actionmailer', require: 'action_mailer'
 gem 'activeadmin_addons'
 gem 'tinymce-rails'
+gem 'rolify'
+gem 'cancancan', '~> 3.0'
+
 
 
 

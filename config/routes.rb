@@ -1,26 +1,26 @@
 Rails.application.routes.draw do
+  # Devise routes for ActiveAdmin and regular users
   devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
   devise_for :users
+  
+  # ActiveAdmin routes
+  ActiveAdmin.routes(self)
+  
+  # Regular resource for roles
+  resources :roles
 
+  # Namespace for custom admin actions
   namespace :admin do
     get 'clientes/search', to: 'clientes#search', as: :search_clientes
   end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Custom route for health check
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
+  # Routes for image and upload handling
+  post 'images/upload', to: 'images#upload'
+  post 'uploads/create', to: 'uploads#create'
+
+  # Example root path, uncomment and adjust as needed
   # root "posts#index"
 end
-
-# config/routes.rb
-Rails.application.routes.draw do
-  post 'images/upload', to: 'images#upload'
-end
-
-# config/routes.rb
-Rails.application.routes.draw do
-  post 'uploads/create', to: 'uploads#create'
-end
-
