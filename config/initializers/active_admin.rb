@@ -53,4 +53,7 @@ ActiveAdmin.setup do |config|
       menu.add label: "Volver Atrás", priority: 5, url: -> { admin_root_path }
     end
   end
+
+  # Usar CanCanCan para la autorización
+  config.authorization_adapter = ActiveAdmin::CanCanAdapter
 end

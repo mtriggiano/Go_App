@@ -1,26 +1,24 @@
+# app/models/ability.rb
 class Ability
   include CanCan::Ability
 
   def initialize(user)
-    user ||= User.new  # guest user (no logueado)
+    user ||= AdminUser.new # Usuario por defecto (visitante no logueado)
 
-    # Reset any previously defined abilities
-    can :manage, :all if user.has_role?(:admin)
-    # Define permisos para todos los usuarios
-    can :read, OrdenTrabajo if user.has_permission?('ver_ordenes')
-    # Ejemplo de configuración detallada para roles dentro de Active Admin
-    if user.has_role?(:admin)
-      can :manage, Role  # Permite al admin gestionar roles
+    if user.roles.exists?
+      if user.roles.any? { |role| role.name == 'Admin' }
+        can :manage, :all
+      else
+        user.roles.each do |role|
+          role.permissions.each do |permission|
+            can permission.action.to_sym, permission.subject_class.constantize
+          end
+        end
+      end
     else
-      can :read, Role    # Permite a otros usuarios leer sobre los roles, si necesario
-    end
-
-    # Restricciones para usuarios no administradores
-    unless user.has_role?(:admin)
-      # Aquí se pueden añadir restricciones específicas para usuarios no administrativos
-      # Por ejemplo, pueden leer artículos pero no crearlos ni editarlos
-      can :read, Article  # Asumiendo que los usuarios no administrativos pueden leer artículos
-      cannot :manage, Article
+      # Permisos para usuarios sin roles
+      can :read, ActiveAdmin::Page, name: "Dashboard"
+      can [:read, :update], AdminUser, id: user.id
     end
   end
 end

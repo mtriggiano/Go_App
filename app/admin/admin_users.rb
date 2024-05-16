@@ -2,12 +2,14 @@
 ActiveAdmin.register AdminUser, namespace: :user_management do
   menu priority: 1, label: "Admin Users"
 
-  permit_params :email, :password, :password_confirmation, role_ids: []
+  permit_params :email, :password, :password_confirmation, :nombre, :apellido, role_ids: []
 
   index do
     selectable_column
     id_column
     column :email
+    column :nombre
+    column :apellido
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
@@ -15,6 +17,8 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
   end
 
   filter :email
+  filter :nombre
+  filter :apellido
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
@@ -22,16 +26,21 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
   form do |f|
     f.inputs do
       f.input :email
+      f.input :nombre
+      f.input :apellido
       f.input :password, input_html: { autocomplete: "new-password" }
       f.input :password_confirmation, input_html: { autocomplete: "new-password" }
-    end
-    f.inputs 'Roles' do
-      f.input :roles, as: :check_boxes, collection: Role.all
     end
     f.actions
   end
 
   controller do
+    def create
+      # No asignar roles automáticamente al crear un nuevo AdminUser
+      params[:admin_user].delete("role_ids")
+      super
+    end
+
     def update
       if params[:admin_user][:password].blank? && params[:admin_user][:password_confirmation].blank?
         params[:admin_user].delete("password")
@@ -44,6 +53,8 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
   show do
     attributes_table do
       row :email
+      row :nombre
+      row :apellido
       row :roles do |admin_user|
         admin_user.roles.collect { |role| role.name }.join(', ')
       end
