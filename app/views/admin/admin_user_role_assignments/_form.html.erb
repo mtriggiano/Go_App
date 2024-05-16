@@ -1,0 +1,9 @@
+<%= semantic_form_for :admin_user_role_assignment, url: user_management_role_assignments_path, method: :post do |f| %>
+    <%= f.inputs "Asignar Rol a Admin User" do %>
+      <%= f.input :admin_user_id, label: "Admin User", as: :select, collection: AdminUser.all.map { |u| [u.email, u.id] } %>
+      <%= f.input :role_id, label: "Role", as: :select, collection: Role.all.map { |r| [r.name, r.id] } %>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.action :submit, label: "Asignar Rol" %>
+    <% end %>
+  <% end %>

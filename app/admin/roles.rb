@@ -30,8 +30,13 @@ ActiveAdmin.register Role, namespace: :user_management do
     end
   end
 
-  # Agregar un menú personalizado para volver atrás
-  sidebar :back_to_admin do
-    link_to "Volver Atrás", admin_root_path, class: "button"
+  controller do
+    before_action :authorize_admin
+
+    private
+
+    def authorize_admin
+      authorize! :manage, Role
+    end
   end
 end

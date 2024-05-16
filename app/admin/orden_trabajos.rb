@@ -1,12 +1,8 @@
+# app/admin/orden_trabajos.rb
 ActiveAdmin.register OrdenTrabajo do
   menu priority: 4
-  
-  permit_params :numero_remito, :fecha_inicio, :destino, :contacto, :celular, :estado, :cliente_id, :numero_presupuesto, :detalle_tareas, :tipo_ordens
 
-  filter :numero_remito
-  filter :fecha_inicio
-  filter :cliente_id, as: :select, collection: -> { Cliente.all.map { |c| [c.dni_cuit, c.id] } }
-  filter :estado, as: :select, collection: OrdenTrabajo.estados.keys.map { |estado| [estado.humanize, estado] }
+  permit_params :numero_remito, :fecha_inicio, :destino, :contacto, :celular, :estado, :cliente_id, :numero_presupuesto, :detalle_tareas, :tipo_ordens
 
   index do
     selectable_column

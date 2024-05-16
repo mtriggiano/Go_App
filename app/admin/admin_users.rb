@@ -2,7 +2,7 @@
 ActiveAdmin.register AdminUser, namespace: :user_management do
   menu priority: 1, label: "Admin Users"
 
-  permit_params :email, :password, :password_confirmation, :nombre, :apellido, role_ids: []
+  permit_params :email, :password, :password_confirmation, :nombre, :apellido
 
   index do
     selectable_column
@@ -34,22 +34,6 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
     f.actions
   end
 
-  controller do
-    def create
-      # No asignar roles automáticamente al crear un nuevo AdminUser
-      params[:admin_user].delete("role_ids")
-      super
-    end
-
-    def update
-      if params[:admin_user][:password].blank? && params[:admin_user][:password_confirmation].blank?
-        params[:admin_user].delete("password")
-        params[:admin_user].delete("password_confirmation")
-      end
-      super
-    end
-  end
-
   show do
     attributes_table do
       row :email
@@ -61,6 +45,20 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
       row :current_sign_in_at
       row :sign_in_count
       row :created_at
+    end
+  end
+
+  controller do
+    def create
+      super
+    end
+
+    def update
+      if params[:admin_user][:password].blank? && params[:admin_user][:password_confirmation].blank?
+        params[:admin_user].delete("password")
+        params[:admin_user].delete("password_confirmation")
+      end
+      super
     end
   end
 end

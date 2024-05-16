@@ -16,9 +16,9 @@ class Ability
         end
       end
     else
-      # Permisos para usuarios sin roles
-      can :read, ActiveAdmin::Page, name: "Dashboard"
+      # Permisos para usuarios sin roles: Sólo pueden gestionar su propia cuenta
       can [:read, :update], AdminUser, id: user.id
+      can :read, ActiveAdmin::Page, name: "Dashboard" # Permitir acceso al dashboard
     end
   end
 end

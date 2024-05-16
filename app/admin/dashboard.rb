@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# app/admin/dashboard.rb
 ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc { I18n.t("active_admin.dashboard") }
 
@@ -10,24 +10,24 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
+    columns do
+      column do
+        panel "Info" do
+          para "Welcome to ActiveAdmin."
+        end
+      end
+    end
+  end
 
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
-  end # content
+  controller do
+    before_action :redirect_if_no_roles
+
+    private
+
+    def redirect_if_no_roles
+      if current_admin_user.roles.empty?
+        redirect_to edit_user_management_admin_user_path(current_admin_user), alert: "No tienes acceso al panel de administración. Solo puedes gestionar tu información personal."
+      end
+    end
+  end
 end

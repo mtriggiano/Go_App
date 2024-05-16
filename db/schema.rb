@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_16_032136) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_16_105229) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_032136) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "admin_user_role_assignments", force: :cascade do |t|
+    t.bigint "admin_user_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_admin_user_role_assignments_on_admin_user_id"
+    t.index ["role_id"], name: "index_admin_user_role_assignments_on_role_id"
   end
 
   create_table "admin_users", force: :cascade do |t|
@@ -122,6 +131,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_032136) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "action"
+    t.string "subject_class"
   end
 
   create_table "role_permissions", force: :cascade do |t|
@@ -167,6 +178,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_032136) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_user_role_assignments", "admin_users"
+  add_foreign_key "admin_user_role_assignments", "roles"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
 end
