@@ -4,11 +4,10 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable
 
+  has_and_belongs_to_many :roles, join_table: :admin_users_roles
+  
   # Definir los atributos que pueden ser buscados por Ransack.
-  # Asegúrate de no incluir datos sensibles.
   def self.ransackable_attributes(auth_object = nil)
-    # Lista de atributos que Ransack puede buscar.
-    # Ajusta esta lista según las necesidades de tu aplicación.
     %w[id email created_at updated_at]
   end
 end

@@ -1,6 +1,8 @@
-ActiveAdmin.register Role do
-  menu priority: 5  # Ajusta la prioridad para posicionarlo en el menú
-  permit_params :name, permission_ids: [] # Asegúrate de permitir los parámetros adecuados
+# app/admin/roles.rb
+ActiveAdmin.register Role, namespace: :user_management do
+  menu priority: 3, label: "Roles"
+
+  permit_params :name, permission_ids: []
 
   index do
     selectable_column
@@ -22,6 +24,14 @@ ActiveAdmin.register Role do
   show do
     attributes_table do
       row :name
+      row :permissions do |role|
+        role.permissions.collect { |permission| permission.name }.join(', ')
+      end
     end
+  end
+
+  # Agregar un menú personalizado para volver atrás
+  sidebar :back_to_admin do
+    link_to "Volver Atrás", admin_root_path, class: "button"
   end
 end

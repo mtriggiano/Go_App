@@ -1,13 +1,19 @@
+# config/routes.rb
 Rails.application.routes.draw do
   # Devise routes for ActiveAdmin and regular users
   devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :users
-  
+
   # ActiveAdmin routes
   ActiveAdmin.routes(self)
-  
-  # Regular resource for roles
-  resources :roles
+
+  # Namespace for user management
+  namespace :user_management do
+    resources :admin_users, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :users, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :roles, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :permissions, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  end
 
   # Namespace for custom admin actions
   namespace :admin do
