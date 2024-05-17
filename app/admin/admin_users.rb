@@ -10,6 +10,9 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
     column :email
     column :nombre
     column :apellido
+    column :roles do |admin_user|
+      admin_user.roles.pluck(:name).join(', ')
+    end
     column :current_sign_in_at
     column :sign_in_count
     column :created_at

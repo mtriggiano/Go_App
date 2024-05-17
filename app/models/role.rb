@@ -11,8 +11,11 @@ class Role < ApplicationRecord
 
   scopify
 
-  # Define qué atributos pueden ser buscados a través de Ransack
   def self.ransackable_attributes(auth_object = nil)
     %w[name created_at updated_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["admin_users", "permissions", "resource", "role_permissions", "users"]
   end
 end

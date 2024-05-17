@@ -1,11 +1,22 @@
 class AdminUser < ApplicationRecord
-  has_and_belongs_to_many :roles
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
-  # Define the attributes that can be searched by Ransack
+  has_and_belongs_to_many :roles, join_table: :admin_users_roles
+
   def self.ransackable_attributes(auth_object = nil)
-    %w[id email nombre apellido created_at updated_at]
+    ["apellido", "created_at", "email", "id", "nombre", "updated_at"]
   end
 
-  # Otras asociaciones y validaciones...
+  def self.ransackable_associations(auth_object = nil)
+    ["roles"]
+  end
+
+  def self.serialize_from_session(key, salt)
+    record = to_adapter.get(key[0])
+    record if record && record.authenticatable_salt == salt
+  end
+
+  def self.find_for_authentication(tainted_conditions)
+    find_by(tainted_conditions)
+  end
 end
