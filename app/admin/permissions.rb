@@ -29,4 +29,14 @@ ActiveAdmin.register Permission, as: "Permission", namespace: :user_management d
     end
     f.actions
   end
+
+  controller do
+    before_action :authorize_access
+
+    private
+
+    def authorize_access
+      authorize! :manage, Permission
+    end
+  end
 end

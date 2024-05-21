@@ -43,6 +43,12 @@ ActiveAdmin.register Cliente do
       clients = Cliente.ransack(nombre_or_apellido_or_dni_cuit_cont: params[:q]).result(distinct: true)
       render json: clients.map { |client| { id: client.id, text: "#{client.nombre} #{client.apellido} - #{client.dni_cuit}" } }
     end
+
+    private
+
+    def authorize_access
+      authorize! :manage, Cliente
+    end
   end
 
   member_action :send_invitation, method: :post do

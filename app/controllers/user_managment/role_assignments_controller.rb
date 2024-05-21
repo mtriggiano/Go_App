@@ -1,6 +1,6 @@
-# app/controllers/user_management/role_assignments_controller.rb
 module UserManagement
   class RoleAssignmentsController < ApplicationController
+    before_action :authorize_access
     before_action :set_admin_user_role_assignment, only: [:edit, :update, :destroy]
 
     def index
@@ -53,6 +53,10 @@ module UserManagement
 
     def role_assignment_params
       params.require(:admin_user_role_assignment).permit(:admin_user_id, role_ids: [])
+    end
+
+    def authorize_access
+      authorize! :manage, AdminUserRoleAssignment
     end
   end
 end

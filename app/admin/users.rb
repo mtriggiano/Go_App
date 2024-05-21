@@ -1,4 +1,3 @@
-# app/admin/users.rb
 ActiveAdmin.register User, namespace: :user_management do
   menu priority: 2, label: "Users"
 
@@ -34,6 +33,14 @@ ActiveAdmin.register User, namespace: :user_management do
       row :roles do
         user.roles.collect { |role| role.name }.join(', ')
       end
+    end
+  end
+
+  controller do
+    private
+
+    def authorize_access
+      authorize! :manage, User
     end
   end
 end

@@ -1,12 +1,7 @@
+# app/models/user.rb
 class User < ApplicationRecord
-  # Configuracion con devise
-  devise :database_authenticatable, :registerable,
-  :recoverable, :rememberable, :validatable
-    # Métodos ransackable
-    def self.ransackable_attributes(auth_object = nil)
-      %w[id email created_at updated_at]
-    end
   rolify
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -17,5 +12,10 @@ class User < ApplicationRecord
 
   def assign_default_role
     self.add_role(:newuser) if self.roles.blank?
+  end
+
+  # Métodos ransackable
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id email created_at updated_at]
   end
 end

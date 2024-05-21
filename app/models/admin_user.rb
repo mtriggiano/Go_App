@@ -1,4 +1,6 @@
+# app/models/admin_user.rb
 class AdminUser < ApplicationRecord
+  rolify
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
   has_and_belongs_to_many :roles, join_table: :admin_users_roles

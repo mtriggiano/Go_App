@@ -1,4 +1,3 @@
-# app/admin/admin_user_role_assignments.rb
 ActiveAdmin.register AdminUser, as: "Role Assignment", namespace: :user_management do
   menu priority: 5, label: "Role Assignments"
 
@@ -38,34 +37,12 @@ ActiveAdmin.register AdminUser, as: "Role Assignment", namespace: :user_manageme
   end
 
   controller do
-    def create
-      admin_user = AdminUser.new(role_assignment_params)
-      roles = Role.where(id: role_assignment_params[:role_ids].reject(&:blank?))
-      admin_user.roles = roles
-
-      if admin_user.save
-        redirect_to user_management_role_assignments_path, notice: "Roles asignados correctamente."
-      else
-        render :new
-      end
-    end
-
-    def update
-      admin_user = AdminUser.find(params[:id])
-      roles = Role.where(id: role_assignment_params[:role_ids].reject(&:blank?))
-      admin_user.roles = roles
-
-      if admin_user.save
-        redirect_to user_management_role_assignments_path, notice: "Roles actualizados correctamente."
-      else
-        render :edit
-      end
-    end
+    before_action :authorize_access
 
     private
 
-    def role_assignment_params
-      params.require(:admin_user).permit(:email, role_ids: [])
+    def authorize_access
+      authorize! :manage, AdminUserRoleAssignment
     end
   end
 end

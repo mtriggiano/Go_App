@@ -1,3 +1,4 @@
+# app/models/orden_trabajo.rb
 class OrdenTrabajo < ApplicationRecord
   belongs_to :cliente, optional: true
 
@@ -13,7 +14,7 @@ class OrdenTrabajo < ApplicationRecord
     cancelada: 4,
     anulada: 5
   }
-  
+
   enum tipo_ordens: {
     servicio_internet: 0,
     instalaciones: 1,

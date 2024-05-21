@@ -1,4 +1,3 @@
-# app/admin/roles.rb
 ActiveAdmin.register Role, namespace: :user_management do
   menu priority: 3, label: "Roles"
 
@@ -31,11 +30,11 @@ ActiveAdmin.register Role, namespace: :user_management do
   end
 
   controller do
-    before_action :authorize_admin
+    before_action :authorize_access
 
     private
 
-    def authorize_admin
+    def authorize_access
       authorize! :manage, Role
     end
   end

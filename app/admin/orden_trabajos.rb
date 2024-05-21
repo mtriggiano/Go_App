@@ -1,4 +1,3 @@
-# app/admin/orden_trabajos.rb
 ActiveAdmin.register OrdenTrabajo do
   menu priority: 4
 
@@ -80,6 +79,12 @@ ActiveAdmin.register OrdenTrabajo do
   controller do
     def scoped_collection
       super.includes(:cliente) # optimiza la carga incluyendo la asociación cliente
+    end
+
+    private
+
+    def authorize_access
+      authorize! :manage, OrdenTrabajo
     end
   end
 end

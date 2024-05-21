@@ -10,6 +10,9 @@ ActiveAdmin.setup do |config|
   config.filter_attributes = [:encrypted_password, :password, :password_confirmation]
   config.localize_format = :long
 
+  # Configura CanCanCan
+  config.authorization_adapter = ActiveAdmin::CanCanAdapter
+
   config.namespace :admin do |admin|
     admin.build_menu :default do |menu|
       menu.add label: "Gestión de Usuarios", priority: 1, url: -> { user_management_admin_users_path }

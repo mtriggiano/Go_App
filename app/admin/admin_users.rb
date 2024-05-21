@@ -1,4 +1,3 @@
-# app/admin/admin_users.rb
 ActiveAdmin.register AdminUser, namespace: :user_management do
   menu priority: 1, label: "Admin Users"
 
@@ -52,6 +51,14 @@ ActiveAdmin.register AdminUser, namespace: :user_management do
   end
 
   controller do
+    before_action :authorize_access
+
+    private
+
+    def authorize_access
+      authorize! :manage, AdminUser
+    end
+
     def create
       super
     end
