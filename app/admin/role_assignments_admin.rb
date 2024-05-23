@@ -1,3 +1,4 @@
+# app/admin/role_assignments_admin.rb
 ActiveAdmin.register AdminUser, as: "Role Assignment", namespace: :user_management do
   menu priority: 5, label: "Role Assignments"
 

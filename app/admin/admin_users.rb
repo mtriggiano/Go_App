@@ -1,4 +1,4 @@
-ActiveAdmin.register AdminUser, namespace: :user_management do
+ActiveAdmin.register AdminUser, as: "AdminUser", namespace: :user_management do
   menu priority: 1, label: "Admin Users"
 
   permit_params :email, :password, :password_confirmation, :nombre, :apellido

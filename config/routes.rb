@@ -1,3 +1,4 @@
+# config/routes.rb
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :users
@@ -10,6 +11,7 @@ Rails.application.routes.draw do
     resources :roles, only: [:index, :show, :new, :create, :edit, :update, :destroy]
     resources :permissions, only: [:index, :show, :new, :create, :edit, :update, :destroy]
     resources :role_assignments, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resource :dashboard, only: [:show, :update]
   end
 
   namespace :admin do
